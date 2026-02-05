@@ -16,13 +16,18 @@ export class MainMenuScene implements Scene {
 	]);
 
 	render(): void {
-		console.log(Renderer.renderHeader("Final-Realm", "by StemZ-DEV"));
 		console.log(
-			chalk.whiteBright.underline("Choose an option to begin your journey!"),
+			Renderer.renderHeader(
+				`Final-Realm v${Engine.getVersion()}`,
+				"Select an option to begin your journey!",
+			),
 		);
 
 		const actionContent = this.menu.getContent();
-		console.log(actionContent);
+		console.log(Renderer.indent(actionContent));
+		console.log(
+			Renderer.indent(chalk.gray("\n [↑/↓] Select   [ENTER] Confirm")),
+		);
 	}
 
 	async update(): Promise<void> {
@@ -40,7 +45,7 @@ export class MainMenuScene implements Scene {
 		switch (action) {
 			case "exit":
 				console.log("Thank you for playing, Final-Realm!");
-                await new Promise(r => setTimeout(r, 800));
+				await new Promise((r) => setTimeout(r, 800));
 				Engine.stop();
 				break;
 

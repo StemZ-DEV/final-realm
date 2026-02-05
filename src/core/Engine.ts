@@ -1,7 +1,10 @@
 import readline from "readline";
 import { SceneManager } from "./SceneManager";
+import chalk from "chalk";
 
 export class GameEngine {
+	private GAME_VERSION: string = "0.1.0";
+
 	private sceneManager: SceneManager;
 	private isRunning: boolean = false;
 
@@ -13,8 +16,32 @@ export class GameEngine {
 		return this.sceneManager;
 	}
 
+	public getVersion(): string {
+		return this.GAME_VERSION;
+	}
+
 	/** Inf game loop */
 	public async run(): Promise<void> {
+		// Window size safeguard
+		const MIN_WIDTH = 95;
+		const MIN_HEIGHT = 24;
+
+		const checkSize = () => {
+			return (
+				process.stdout.columns >= MIN_WIDTH && process.stdout.rows >= MIN_HEIGHT
+			);
+		};
+
+		if (!checkSize()) {
+			console.clear();
+			console.log(chalk.red.bold("Terminal window too small!"));
+			console.log(
+				`Please resize your terminal to at least ${MIN_WIDTH}x${MIN_HEIGHT}.`,
+			);
+			console.log(`Current: ${process.stdout.columns}x${process.stdout.rows}`);
+			process.exit(1);
+		}
+
 		this.isRunning = true;
 
 		if (process.stdin.isTTY) process.stdin.setRawMode(true);

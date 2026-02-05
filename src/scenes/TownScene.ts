@@ -43,9 +43,17 @@ export class TownScene implements Scene {
 
 		const actionContent = this.menu.getContent();
 
-		console.log(Renderer.renderHeader("Final-Realm", "by StemZ-DEV"));
+		console.log(
+			Renderer.renderHeader(
+				`Final-Realm v${Engine.getVersion()}`,
+				"by StemZ-DEV",
+			),
+		);
 		console.log(Renderer.createDualPanel(playerStats, actionContent));
 		console.log("");
+		console.log(
+			Renderer.indent(chalk.gray("\n [↑/↓] Select   [ENTER] Confirm")),
+		);
 	}
 
 	async update() {
@@ -61,8 +69,13 @@ export class TownScene implements Scene {
 
 	private async handleAction(action: string) {
 		if (action === "exit") {
-			State.save();
-			Engine.getSceneManager().switch(new MainMenuScene());
+			const proceed = await Input.confirm("Save and exit to Main Menu?");
+			if (proceed) {
+				State.save();
+				console.log(Renderer.indent(chalk.green(" Game Saved.")));
+				await new Promise((r) => setTimeout(r, 600));
+				Engine.getSceneManager().switch(new MainMenuScene());
+			}
 		}
 	}
 

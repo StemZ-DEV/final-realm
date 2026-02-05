@@ -1,5 +1,6 @@
 import Conf from "conf";
 import { Player } from "../interfaces/Player";
+import { Engine } from "./Engine";
 const pj = require("../../package.json");
 
 interface StoreSchema {
@@ -17,6 +18,7 @@ export class StateManager {
 			projectName: "final-realm",
 			configName: `save-${slot}`,
 			fileExtension: "json",
+			projectVersion: Engine.getVersion(),
 		});
 	}
 
@@ -37,7 +39,6 @@ export class StateManager {
 				level: player?.level || 0,
 			});
 		}
-		console.log(pj.version);
 		return slots;
 	}
 

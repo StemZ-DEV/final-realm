@@ -1,64 +1,124 @@
 import readline from "readline";
 import { Engine } from "./Engine";
 import chalk from "chalk";
+import { Renderer } from "../ui/Renderer";
 
-export type KeySignal = "up" | "down" | "confirm" | "back";
+export type KeySignal = "up" | "down" | "confirm" | "back" | "resize";
 
 export class Input {
-    static async getNavigation(): Promise<KeySignal> {
-        return new Promise((resolve) => {
-            const onKey = (_: string, key: any) => {
-                if (key.ctrl && key.name === "c") Engine.stop();
+	static async getNavigation(): Promise<KeySignal> {
+		return new Promise((resolve) => {
+			const stdin = process.stdin;
 
-                switch (key.name) {
-                    case "up":
-                    case "w":
-                        resolve("up");
-                        break;
+			const onKey = (_: string, key: any) => {
+				if (key.ctrl && key.name === "c") Engine.stop();
 
-                    case "down":
-                    case "s":
-                        resolve("down");
-                        break;
+				let signal: KeySignal | null = null;
 
-                    case "return":
-                    case "enter":
-                        resolve("confirm");
+				switch (key.name) {
+					case "up":
+					case "w":
+						signal = "up";
+						break;
+					case "down":
+					case "s":
+						signal = "down";
+						break;
+					case "return":
+					case "enter":
+						signal = "confirm";
+						break;
+					case "escape":
+					case "b":
+						signal = "back";
+						break;
+				}
 
-                    case "escape":
-                    case "b":
-                        resolve("back");
-                        break;
+				if (signal) {
+					cleanup();
+					resolve(signal);
+				}
+			};
 
-                    default:
-                        process.stdin.once("keypress", onKey);
-                }
-            };
+			const onResize = () => {
+				cleanup();
+				resolve("resize");
+			};
 
-            process.stdin.once("keypress", onKey);
-        })
-    }
+			const cleanup = () => {
+				stdin.removeListener("keypress", onKey);
+				process.removeListener("SIGWINCH", onResize);
+			};
 
-    static async readText(prompt: string): Promise<string> {
-        if (process.stdin.isTTY)
-            process.stdin.setRawMode(false);
-        process.stdin.pause();
+			process.on("SIGWINCH", onResize);
+			stdin.on("keypress", onKey);
+		});
+	}
 
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
+	static async readText(
+		prompt: string,
+		defaultValue?: string,
+	): Promise<string> {
+		if (process.stdin.isTTY) process.stdin.setRawMode(false);
+		process.stdin.pause();
 
-        return new Promise((resolve) => {
-            rl.question(chalk.green("? ") + chalk.white.bold(prompt) + " ", (answer) => {
-                rl.close();
+		const rl = readline.createInterface({
+			input: process.stdin,
+			output: process.stdout,
+		});
 
-                if (process.stdin.isTTY)
-                    process.stdin.setRawMode(true);
-                process.stdin.resume();
-                readline.emitKeypressEvents(process.stdin);
-                resolve(answer.trim() || "Unknown");
-            });
-        });
-    }
+		const promptString = Renderer.indent(
+			defaultValue
+				? `\n ${chalk.bold.white(prompt)} ${chalk.gray(`(default: ${defaultValue})`)} `
+				: `\n ${chalk.bold.white(prompt)} `,
+		);
+
+		return new Promise((resolve) => {
+			rl.question(promptString, (answer) => {
+				rl.close();
+
+				if (process.stdin.isTTY) process.stdin.setRawMode(true);
+				process.stdin.resume();
+				readline.emitKeypressEvents(process.stdin);
+
+				resolve(answer.trim() || defaultValue || "");
+			});
+		});
+	}
+
+	static async confirm(
+		message: string,
+		defaultYes: boolean = true,
+	): Promise<boolean> {
+		const suffix = defaultYes ? "(Y/n)" : "(y/N)";
+
+		console.log(
+			Renderer.indent(
+				`\n ${chalk.yellow("!?")} ${chalk.bold.white(message)} ${chalk.gray(suffix)} `,
+			),
+		);
+
+		return new Promise((resolve) => {
+			const onKey = (_: string, key: any) => {
+				process.stdin.removeListener("keypress", onKey);
+
+				if (key.name === "y") {
+					resolve(true);
+					return;
+				}
+				if (key.name === "n" || key.name === "escape") {
+					resolve(false);
+					return;
+				}
+
+				if (key.name === "return" || key.name === "enter") {
+					resolve(defaultYes);
+					return;
+				}
+
+				resolve(false);
+			};
+			process.stdin.on("keypress", onKey);
+		});
+	}
 }
