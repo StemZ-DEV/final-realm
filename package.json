@@ -17,8 +17,9 @@
 		"cli-progress": "^3.12.0",
 		"conf": "^15.1.0",
 		"figlet": "^1.10.0",
-		"inquirer": "^13.2.2",
-		"log-update": "^7.0.2"
+		"log-update": "^7.0.2",
+		"string-width": "^8.1.1",
+		"strip-ansi": "^7.1.2"
 	},
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.6",
