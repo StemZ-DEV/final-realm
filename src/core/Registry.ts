@@ -7,6 +7,8 @@ export class Registry {
     private static recipes: Map<string, Recipe> = new Map();
 
     static registerItem(item: Item) {
+        if (this.items.has(item.id))
+            console.warn(`Registry Warning: Overwriting item ${item.id}`);
         this.items.set(item.id, item);
     }
 

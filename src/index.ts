@@ -7,9 +7,13 @@
  */
 
 import { Engine } from "./core/Engine";
+import { loadContent } from "./data/items";
 import { MainMenuScene } from "./scenes/MainMenuScene";
 
 async function main() {
+	loadContent();
+
+
 	Engine.getSceneManager().push(new MainMenuScene());
 
 	await Engine.run();
