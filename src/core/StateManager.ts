@@ -1,7 +1,10 @@
 import Conf from "conf";
 import { Player } from "../interfaces/Player";
 import { Engine } from "./Engine";
-const pj = require("../../package.json");
+
+interface GlobalSettings {
+	centerContent: boolean;
+}
 
 interface StoreSchema {
 	player?: Player;
@@ -12,6 +15,34 @@ export class StateManager {
 	private static instance: StateManager;
 	private currentSlot: number | null = null;
 	private player: Player | null = null;
+
+	private settingsConfig: Conf<GlobalSettings>;
+	private settings: GlobalSettings;
+
+	private constructor() {
+		this.settingsConfig = new Conf<GlobalSettings>({
+			projectName: "final-realm",
+			configName: "global-settings",
+			fileExtension: "json",
+			defaults: {
+				centerContent: true,
+			},
+		});
+
+		this.settings = this.settingsConfig.store;
+	}
+
+	public getSettings(): GlobalSettings {
+		return this.settings;
+	}
+
+	public updateSetting<K extends keyof GlobalSettings>(
+		key: K,
+		value: GlobalSettings[K],
+	): void {
+		this.settings[key] = value;
+		this.settingsConfig.set(key, value);
+	}
 
 	private getSlotConfig(slot: number) {
 		return new Conf<StoreSchema>({
@@ -42,6 +73,17 @@ export class StateManager {
 		return slots;
 	}
 
+	public deleteSave(slot: number): void {
+		const config = this.getSlotConfig(slot);
+
+		config.clear();
+
+		if (this.currentSlot === slot) {
+			this.player = null;
+			this.currentSlot = null;
+		}
+	}
+
 	public createNewGame(name: string, slot: number): void {
 		this.currentSlot = slot;
 		this.player = {
@@ -64,7 +106,7 @@ export class StateManager {
 				intelligence: 5,
 				wisdom: 5,
 			},
-			attributePoints: 0,
+			attributePoints: 10,
 			equipment: {},
 			inventory: [],
 		};

@@ -16,6 +16,13 @@ export interface Attributes {
     wisdom: number;         // Max MP / Magic Resist
 }
 
+export interface Equipment {
+    primary?: string;
+    secondary?: string;
+    armor?: string;
+    accessory?: string;
+}
+
 export interface Player {
     name: string;
     level: number;
@@ -31,12 +38,7 @@ export interface Player {
     attributes: Attributes;
     attributePoints: number;
 
-    equipment: {
-        primary?: string;
-        secondary?: string;
-        armor?: string;
-        accessory?: string;
-    }
+    equipment: Equipment;
 
     inventory: {
         id: string,

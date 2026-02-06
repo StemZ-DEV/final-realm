@@ -6,6 +6,8 @@ import { Engine } from "../core/Engine";
 import { MainMenuScene } from "./MainMenuScene";
 import { Menu } from "../ui/Menu";
 import { Input } from "../core/Input";
+import { SettingsScene } from "./SettingsScene";
+import { AttributeAllocationScene } from "./AttributeAllocationScene";
 
 export class TownScene implements Scene {
 	enter(): void {}
@@ -14,6 +16,7 @@ export class TownScene implements Scene {
 		{ label: "🌳 Explore the Wilds", value: "explore" },
 		{ label: "🎒 Manage Inventory", value: "inv" },
 		{ label: "✨ Assign Attributes", value: "stats" },
+		{ label: "🔧 Settings", value: "settings" },
 		{ label: "💾 Save & Exit", value: "exit" },
 	]);
 
@@ -46,7 +49,7 @@ export class TownScene implements Scene {
 		console.log(
 			Renderer.renderHeader(
 				`Final-Realm v${Engine.getVersion()}`,
-				"by StemZ-DEV",
+				`Location: ${chalk.cyan.underline("Town")}`,
 			),
 		);
 		console.log(Renderer.createDualPanel(playerStats, actionContent));
@@ -76,6 +79,15 @@ export class TownScene implements Scene {
 				await new Promise((r) => setTimeout(r, 600));
 				Engine.getSceneManager().switch(new MainMenuScene());
 			}
+		}
+
+		if (action === "settings") {
+			Engine.getSceneManager().push(new SettingsScene());
+			
+		}
+
+		if (action === "stats") {
+			Engine.getSceneManager().push(new AttributeAllocationScene());
 		}
 	}
 

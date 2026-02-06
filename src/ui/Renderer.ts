@@ -1,5 +1,6 @@
 import boxen, { Options } from "boxen";
 import chalk from "chalk";
+import { State } from "../core/StateManager";
 
 const BOX_STYLE: Options = {
 	padding: 1,
@@ -13,6 +14,11 @@ const GAME_WIDTH = 80;
 export class Renderer {
 
 	static getPadding(): string {
+
+        if(!State.getSettings().centerContent) {
+            return "";
+        }
+
 		const terminalWidth = process.stdout.columns || 80;
 		const paddingAmount = Math.max(
 			0,

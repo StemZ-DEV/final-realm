@@ -11,7 +11,7 @@ import { Input } from "../core/Input";
 export class SaveSelectScene implements Scene {
 	private menu: Menu<number> | null = null;
 
-	constructor(private mode: "new" | "load") {}
+	constructor(private mode: "new" | "load" | "delete") {}
 
 	enter() {
 		const slots = State.getSaveSlots();
@@ -19,7 +19,9 @@ export class SaveSelectScene implements Scene {
 		const options: MenuOption<number>[] = slots.map((s) => ({
 			label: `Slot ${s.slot}: ${s.name} ${s.isEmpty ? "" : `(LVL ${s.level})`}`,
 			value: s.slot,
-			disabled: this.mode === "load" && s.isEmpty,
+			disabled:
+				(this.mode === "load" && s.isEmpty) ||
+				(this.mode === "delete" && s.isEmpty),
 		}));
 
 		options.push({ label: "Back", value: -1 });
@@ -32,7 +34,14 @@ export class SaveSelectScene implements Scene {
 		console.log(
 			Renderer.renderHeader(
 				`Final-Realm v${Engine.getVersion()}`,
-				"Save Management",
+				"Save Management" +
+					(this.mode === "new"
+						? ": New Save"
+						: this.mode === "load"
+							? ": Load Save"
+							: this.mode === "delete"
+								? `: ${chalk.red.bold("Delete Save")}`
+								: ""),
 			),
 		);
 
@@ -40,7 +49,11 @@ export class SaveSelectScene implements Scene {
 		console.log(
 			Renderer.createSinglePanel(
 				content,
-				this.mode === "new" ? "Overwrite Save" : "Load Game",
+				this.mode === "new"
+					? "Overwrite Save"
+					: this.mode === "load"
+						? "Load Game"
+						: "Delete Save",
 			),
 		);
 		console.log(
@@ -75,7 +88,7 @@ export class SaveSelectScene implements Scene {
 				await new Promise((r) => setTimeout(r, 500));
 				Engine.getSceneManager().switch(new TownScene());
 			}
-		} else {
+		} else if (this.mode === "new") {
 			const slots = State.getSaveSlots();
 			const targetSlot = slots.find((s) => s.slot === slot);
 
@@ -96,6 +109,27 @@ export class SaveSelectScene implements Scene {
 			await new Promise((r) => setTimeout(r, 800));
 
 			Engine.getSceneManager().switch(new TownScene());
+		} else if (this.mode === "delete") {
+			const slots = State.getSaveSlots();
+			const target = slots.find((s) => s.slot === slot);
+
+			if (!target || target.isEmpty) return;
+
+			const confirm = await Input.confirm(
+				`Are you sure you want to ${chalk.bold.underline("PERMANENTLY")} delete ${chalk.red.bold(target.name)}?`,
+				false,
+			);
+
+			if (confirm) {
+				State.deleteSave(slot);
+
+				console.log(
+					Renderer.indent(chalk.red("\n Save deleted successfully.")),
+				);
+				await new Promise((r) => setTimeout(r, 800));
+
+				this.enter();
+			}
 		}
 	}
 

@@ -5,6 +5,7 @@ import { Renderer } from "../ui/Renderer";
 import { SaveSelectScene } from "./SaveSelectScene";
 import { Menu } from "../ui/Menu";
 import { Input } from "../core/Input";
+import { SettingsScene } from "./SettingsScene";
 
 export class MainMenuScene implements Scene {
 	enter(): void {}
@@ -12,6 +13,8 @@ export class MainMenuScene implements Scene {
 	private menu = new Menu([
 		{ label: "New Game", value: "new" },
 		{ label: "Continue", value: "load" },
+		{ label: `[${chalk.red.bold("!")}] Delete Save`, value: "delete" },
+		{ label: "Settings", value: "settings" },
 		{ label: "Exit", value: "exit" },
 	]);
 
@@ -55,6 +58,14 @@ export class MainMenuScene implements Scene {
 
 			case "load":
 				Engine.getSceneManager().push(new SaveSelectScene("load"));
+				break;
+
+			case "settings":
+				Engine.getSceneManager().push(new SettingsScene());
+				break;
+
+			case "delete":
+				Engine.getSceneManager().push(new SaveSelectScene("delete"));
 				break;
 
 			default:

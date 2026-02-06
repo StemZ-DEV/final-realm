@@ -3,7 +3,7 @@ import { Engine } from "./Engine";
 import chalk from "chalk";
 import { Renderer } from "../ui/Renderer";
 
-export type KeySignal = "up" | "down" | "confirm" | "back" | "resize";
+export type KeySignal = "up" | "down" | "left" | "right" | "confirm" | "back" | "resize";
 
 export class Input {
 	static async getNavigation(): Promise<KeySignal> {
@@ -32,6 +32,14 @@ export class Input {
 					case "b":
 						signal = "back";
 						break;
+                    case "left":
+                    case "a":
+                        signal = "left";
+                        break;
+                    case "right":
+                    case "d":
+                        signal = "right";
+                        break;
 				}
 
 				if (signal) {
