@@ -7,6 +7,7 @@ import { Renderer } from "../ui/Renderer";
 import { Input } from "../core/Input";
 import { ProgressBar } from "../ui/ProgressBar";
 import { Attributes } from "../interfaces/Player";
+import { AudioManager } from "../core/Audio";
 
 const ATTR_CONFIG: { key: keyof Attributes; label: string; color: string }[] = [
 	{ key: "strength", label: "Strength (STR)", color: "red" },
@@ -35,7 +36,9 @@ export class AttributeAllocationScene implements Scene {
 		this.tempPoints = p.attributePoints;
 	}
 
-	enter() {}
+	enter() {
+		Renderer.setTitle("Final Realm - Attribute Allocation");
+	}
 
 	render() {
 		console.log(
@@ -82,7 +85,8 @@ export class AttributeAllocationScene implements Scene {
 				? chalk.redBright("> [ Cancel ]")
 				: chalk.gray("  [ Cancel ]");
 
-		const content = rows.join("\n") + "\n\n" + confirmBtn + "\n" + cancelBtn;
+		const content =
+			rows.join("\n") + "\n\n" + confirmBtn + "\n" + cancelBtn;
 
 		console.log(Renderer.createSinglePanel(content));
 		console.log(
@@ -97,9 +101,11 @@ export class AttributeAllocationScene implements Scene {
 		const maxIndex = ATTR_CONFIG.length + 1;
 
 		if (signal === "up") {
+			AudioManager.playNav();
 			this.selectedIndex =
 				(this.selectedIndex - 1 + maxIndex + 1) % (maxIndex + 1);
 		} else if (signal === "down") {
+			AudioManager.playNav();
 			this.selectedIndex = (this.selectedIndex + 1) % (maxIndex + 1);
 		}
 
@@ -108,6 +114,7 @@ export class AttributeAllocationScene implements Scene {
 				if (this.selectedIndex === ATTR_CONFIG.length) {
 					this.saveAndExit();
 				} else {
+					AudioManager.playSelect();
 					Engine.getSceneManager().pop();
 				}
 			}
@@ -118,11 +125,15 @@ export class AttributeAllocationScene implements Scene {
 
 		if (signal === "right") {
 			if (this.tempPoints > 0) {
+				AudioManager.playNav();
 				this.tempAttributes[attrKey]++;
 				this.tempPoints--;
 			}
 		} else if (signal === "left") {
-			if (this.tempAttributes[attrKey] > this.originalAttributes[attrKey]) {
+			if (
+				this.tempAttributes[attrKey] > this.originalAttributes[attrKey]
+			) {
+				AudioManager.playNav();
 				this.tempAttributes[attrKey]--;
 				this.tempPoints++;
 			}
@@ -131,6 +142,12 @@ export class AttributeAllocationScene implements Scene {
 
 	private saveAndExit() {
 		const p = State.getPlayer()!;
+
+		const hasChanged = this.tempPoints !== p.attributePoints;
+
+		if (hasChanged) AudioManager.playStatUp();
+		else AudioManager.playSelect();
+
 		p.attributes = { ...this.tempAttributes };
 		p.attributePoints = this.tempPoints;
 

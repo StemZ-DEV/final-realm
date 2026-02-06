@@ -6,9 +6,12 @@ import { SaveSelectScene } from "./SaveSelectScene";
 import { Menu } from "../ui/Menu";
 import { Input } from "../core/Input";
 import { SettingsScene } from "./SettingsScene";
+import { AudioManager } from "../core/Audio";
 
 export class MainMenuScene implements Scene {
-	enter(): void {}
+	enter(): void {
+		Renderer.setTitle("Final Realm - Main Menu");
+	}
 
 	private menu = new Menu([
 		{ label: "New Game", value: "new" },
@@ -45,6 +48,7 @@ export class MainMenuScene implements Scene {
 	}
 
 	private async handleAction(action: string) {
+		AudioManager.playSelect();
 		switch (action) {
 			case "exit":
 				console.log("Thank you for playing, Final-Realm!");

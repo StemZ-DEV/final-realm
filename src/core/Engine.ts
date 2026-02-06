@@ -2,6 +2,7 @@ import readline from "readline";
 import { SceneManager } from "./SceneManager";
 import chalk from "chalk";
 
+
 export class GameEngine {
 	private GAME_VERSION: string = "0.1.0";
 
@@ -27,8 +28,10 @@ export class GameEngine {
 		const MIN_HEIGHT = 24;
 
 		const checkSize = () => {
+			return true;
 			return (
-				process.stdout.columns >= MIN_WIDTH && process.stdout.rows >= MIN_HEIGHT
+				process.stdout.columns >= MIN_WIDTH &&
+				process.stdout.rows >= MIN_HEIGHT
 			);
 		};
 
@@ -38,7 +41,9 @@ export class GameEngine {
 			console.log(
 				`Please resize your terminal to at least ${MIN_WIDTH}x${MIN_HEIGHT}.`,
 			);
-			console.log(`Current: ${process.stdout.columns}x${process.stdout.rows}`);
+			console.log(
+				`Current: ${process.stdout.columns}x${process.stdout.rows}`,
+			);
 			process.exit(1);
 		}
 

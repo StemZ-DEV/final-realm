@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { AudioManager } from "../core/Audio";
 
 export interface MenuOption<T> {
 	label: string;
@@ -26,7 +27,9 @@ export class Menu<T> {
 		const start = this.selectedIndex;
 		do {
 			this.selectedIndex =
-				(this.selectedIndex - 1 + this.options.length) % this.options.length;
+				(this.selectedIndex - 1 + this.options.length) %
+				this.options.length;
+			AudioManager.playNav();
 		} while (
 			this.options[this.selectedIndex].disabled &&
 			this.selectedIndex !== start
@@ -36,8 +39,8 @@ export class Menu<T> {
 	public moveDown(): void {
 		const start = this.selectedIndex;
 		do {
-			this.selectedIndex =
-				(this.selectedIndex + 1) % this.options.length;
+			this.selectedIndex = (this.selectedIndex + 1) % this.options.length;
+			AudioManager.playNav();
 		} while (
 			this.options[this.selectedIndex].disabled &&
 			this.selectedIndex !== start
@@ -49,16 +52,18 @@ export class Menu<T> {
 	}
 
 	public getContent(): string {
-		return this.options.map((opt, i) => {
-            if (opt.disabled) {
-                return ` ${chalk.gray.dim(opt.label)} ${chalk.gray("(Empty)")}`;
-            }
+		return this.options
+			.map((opt, i) => {
+				if (opt.disabled) {
+					return ` ${chalk.gray.dim(opt.label)} ${chalk.gray("(Empty)")}`;
+				}
 
-            if (i === this.selectedIndex) {
-                return `${chalk.cyanBright(">")} ${chalk.white.bold(opt.label)}`;
-            }
+				if (i === this.selectedIndex) {
+					return `${chalk.cyanBright(">")} ${chalk.white.bold(opt.label)}`;
+				}
 
-            return ` ${chalk.white.dim(opt.label)}`;
-        }).join("\n");
+				return ` ${chalk.white.dim(opt.label)}`;
+			})
+			.join("\n");
 	}
 }

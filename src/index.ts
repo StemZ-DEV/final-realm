@@ -1,18 +1,17 @@
 /**
- * 
+ *
  * 	Final-Realm by StemZ
  * 	Attempted to comment/doc as much as possible, not the best at that though so I apologise to anyone
  * 	reading the src :rofl:
- * 
+ *
  */
 
 import { Engine } from "./core/Engine";
-import { loadContent } from "./data/items";
+import { loadContent } from "./data/Items";
 import { MainMenuScene } from "./scenes/MainMenuScene";
 
 async function main() {
 	loadContent();
-
 
 	Engine.getSceneManager().push(new MainMenuScene());
 

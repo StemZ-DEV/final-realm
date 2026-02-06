@@ -5,6 +5,7 @@ import { Renderer } from "../ui/Renderer";
 import { Menu } from "../ui/Menu";
 import { Input } from "../core/Input";
 import chalk from "chalk";
+import { AudioManager } from "../core/Audio";
 
 export class SettingsScene implements Scene {
 	private menu: Menu<string>;
@@ -25,13 +26,17 @@ export class SettingsScene implements Scene {
 		]);
 	}
 
-	enter() {}
+	enter() {
+		Renderer.setTitle("Final Realm - Game Settings");
+	}
 
 	render() {
 		console.log(
 			Renderer.renderHeader("GAME SETTINGS", "Configure your experience"),
 		);
-		console.log(Renderer.createSinglePanel(this.menu.getContent(), "Options"));
+		console.log(
+			Renderer.createSinglePanel(this.menu.getContent(), "Options"),
+		);
 		console.log(
 			Renderer.indent(
 				chalk.gray("\n [↑/↓] Navigate   [ENTER] Toggle / Select"),
@@ -50,8 +55,10 @@ export class SettingsScene implements Scene {
 		if (signal === "confirm") {
 			const action = this.menu.getSelectedValue();
 			if (action === "back") {
+				AudioManager.playSelect();
 				Engine.getSceneManager().pop();
 			} else if (action === "toggle_center") {
+				AudioManager.playSelect2();
 				const current = State.getSettings().centerContent;
 				State.updateSetting("centerContent", !current);
 

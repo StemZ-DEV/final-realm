@@ -7,6 +7,7 @@ import { TownScene } from "./TownScene";
 import { Menu, MenuOption } from "../ui/Menu";
 import { Renderer } from "../ui/Renderer";
 import { Input } from "../core/Input";
+import { AudioManager } from "../core/Audio";
 
 export class SaveSelectScene implements Scene {
 	private menu: Menu<number> | null = null;
@@ -14,6 +15,7 @@ export class SaveSelectScene implements Scene {
 	constructor(private mode: "new" | "load" | "delete") {}
 
 	enter() {
+		Renderer.setTitle("Final Realm - Save Management");
 		const slots = State.getSaveSlots();
 
 		const options: MenuOption<number>[] = slots.map((s) => ({
@@ -100,11 +102,17 @@ export class SaveSelectScene implements Scene {
 				if (!proceed) return;
 			}
 
-			const name = await Input.readText("Enter Character Name:", "Traveler");
+			const name = await Input.readText(
+				"Enter Character Name:",
+				"Traveler",
+			);
 			State.createNewGame(name, slot);
 
+			AudioManager.playSave();
 			console.log(
-				Renderer.indent(chalk.green(`\n Created ${name} in slot ${slot}!`)),
+				Renderer.indent(
+					chalk.green(`\n Created ${name} in slot ${slot}!`),
+				),
 			);
 			await new Promise((r) => setTimeout(r, 800));
 

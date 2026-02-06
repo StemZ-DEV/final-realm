@@ -8,9 +8,12 @@ import { Menu } from "../ui/Menu";
 import { Input } from "../core/Input";
 import { SettingsScene } from "./SettingsScene";
 import { AttributeAllocationScene } from "./AttributeAllocationScene";
+import { AudioManager } from "../core/Audio";
 
 export class TownScene implements Scene {
-	enter(): void {}
+	enter(): void {
+		Renderer.setTitle("Final Realm - Town");
+	}
 
 	private menu = new Menu([
 		{ label: "🌳 Explore the Wilds", value: "explore" },
@@ -71,10 +74,12 @@ export class TownScene implements Scene {
 	}
 
 	private async handleAction(action: string) {
+		AudioManager.playSelect();
 		if (action === "exit") {
 			const proceed = await Input.confirm("Save and exit to Main Menu?");
 			if (proceed) {
 				State.save();
+				AudioManager.playSave();
 				console.log(Renderer.indent(chalk.green(" Game Saved.")));
 				await new Promise((r) => setTimeout(r, 600));
 				Engine.getSceneManager().switch(new MainMenuScene());
@@ -83,7 +88,6 @@ export class TownScene implements Scene {
 
 		if (action === "settings") {
 			Engine.getSceneManager().push(new SettingsScene());
-			
 		}
 
 		if (action === "stats") {

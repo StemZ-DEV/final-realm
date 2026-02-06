@@ -12,12 +12,14 @@ const BOX_STYLE: Options = {
 const GAME_WIDTH = 80;
 
 export class Renderer {
+	static setTitle(title: string) {
+		process.stdout.write(`\x1B]2;${title}\x07`);
+	}
 
 	static getPadding(): string {
-
-        if(!State.getSettings().centerContent) {
-            return "";
-        }
+		if (!State.getSettings().centerContent) {
+			return "";
+		}
 
 		const terminalWidth = process.stdout.columns || 80;
 		const paddingAmount = Math.max(
@@ -34,7 +36,6 @@ export class Renderer {
 			.map((line) => pad + line)
 			.join("\n");
 	}
-
 
 	/** Create a full-width header box */
 	static renderHeader(title: string, subtitle?: string): string {
@@ -82,7 +83,7 @@ export class Renderer {
 			.map((line, i) => `${line}  ${rightArr[i] || ""}`)
 			.join("\n");
 
-        return this.indent(stitched);
+		return this.indent(stitched);
 	}
 
 	static createSinglePanel(content: string, title?: string): string {
@@ -94,6 +95,6 @@ export class Renderer {
 			textAlignment: "left",
 		});
 
-        return this.indent(box);
+		return this.indent(box);
 	}
 }
