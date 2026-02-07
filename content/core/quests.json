@@ -1,0 +1,12 @@
+[
+  {
+    "id": "bounty_slimes",
+    "name": "Slime Cleanup",
+    "type": "bounty",
+    "description": "Clear slimes near the town gate.",
+    "steps": [
+      { "target": "slime", "count": 3, "progressText": "Slimes cleared." }
+    ],
+    "rewards": { "gold": 25, "xp": 40, "items": [{ "id": "healing_potion", "qty": 1 }] }
+  }
+]

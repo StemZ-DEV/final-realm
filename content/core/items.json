@@ -1,0 +1,84 @@
+[
+  {
+    "id": "iron_sword",
+    "name": "Iron Sword",
+    "type": "weapon",
+    "slot": "mainHand",
+    "rarity": "common",
+    "stats": { "strength": 2 },
+    "maxDurability": 20,
+    "value": 30,
+    "description": "A reliable blade for new adventurers."
+  },
+  {
+    "id": "wooden_shield",
+    "name": "Wooden Shield",
+    "type": "offhand",
+    "slot": "offHand",
+    "rarity": "common",
+    "stats": { "defense": 2 },
+    "maxDurability": 25,
+    "value": 24,
+    "description": "Basic protection."
+  },
+  {
+    "id": "leather_armor",
+    "name": "Leather Armor",
+    "type": "armor",
+    "slot": "armor",
+    "rarity": "common",
+    "stats": { "defense": 3 },
+    "maxDurability": 30,
+    "value": 40,
+    "description": "Flexible protection for long journeys."
+  },
+  {
+    "id": "fire_ring",
+    "name": "Ring of Ember",
+    "type": "accessory",
+    "slot": "accessory",
+    "rarity": "uncommon",
+    "stats": { "intelligence": 1 },
+    "maxDurability": 40,
+    "value": 60,
+    "description": "Warm to the touch. It dampens fire magic."
+  },
+  {
+    "id": "healing_potion",
+    "name": "Healing Potion",
+    "type": "consumable",
+    "rarity": "common",
+    "value": 15,
+    "stackable": true,
+    "effects": ["regen"],
+    "description": "Restores health over time."
+  },
+  {
+    "id": "bandage",
+    "name": "Field Bandage",
+    "type": "consumable",
+    "rarity": "common",
+    "value": 8,
+    "stackable": true,
+    "effects": ["regen"],
+    "description": "Stops bleeding and promotes healing."
+  },
+  {
+    "id": "herb",
+    "name": "Medicinal Herb",
+    "type": "material",
+    "rarity": "common",
+    "value": 5,
+    "stackable": true,
+    "description": "A useful plant for brews."
+  },
+  {
+    "id": "iron_ore",
+    "name": "Iron Ore",
+    "type": "material",
+    "rarity": "common",
+    "value": 6,
+    "stackable": true,
+    "description": "Raw ore for smithing."
+  }
+]

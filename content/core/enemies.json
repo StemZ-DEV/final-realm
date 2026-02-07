@@ -1,0 +1,42 @@
+[
+  {
+    "id": "slime",
+    "name": "Slime",
+    "level": 1,
+    "stats": { "hp": 20, "strength": 2, "defense": 1, "agility": 1, "intelligence": 1, "wisdom": 1, "vitality": 1 },
+    "lootTableId": "enemy_basic",
+    "tags": ["ooze"]
+  },
+  {
+    "id": "wolf",
+    "name": "Wild Wolf",
+    "level": 2,
+    "stats": { "hp": 28, "strength": 3, "defense": 2, "agility": 3, "intelligence": 1, "wisdom": 1, "vitality": 2 },
+    "lootTableId": "enemy_basic",
+    "tags": ["beast"]
+  },
+  {
+    "id": "bandit",
+    "name": "Bandit",
+    "level": 3,
+    "stats": { "hp": 35, "strength": 4, "defense": 3, "agility": 2, "intelligence": 1, "wisdom": 1, "vitality": 3 },
+    "lootTableId": "enemy_basic",
+    "tags": ["humanoid"]
+  },
+  {
+    "id": "goblin",
+    "name": "Goblin Raider",
+    "level": 3,
+    "stats": { "hp": 32, "strength": 4, "defense": 2, "agility": 3, "intelligence": 1, "wisdom": 1, "vitality": 2 },
+    "lootTableId": "enemy_basic",
+    "tags": ["goblin"]
+  },
+  {
+    "id": "ogre",
+    "name": "Ogre",
+    "level": 5,
+    "stats": { "hp": 60, "strength": 6, "defense": 4, "agility": 1, "intelligence": 1, "wisdom": 1, "vitality": 4 },
+    "lootTableId": "enemy_elite",
+    "tags": ["giant"]
+  }
+]

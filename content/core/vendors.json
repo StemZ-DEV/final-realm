@@ -1,0 +1,26 @@
+[
+  {
+    "id": "blacksmith",
+    "name": "Blacksmith",
+    "inventoryTableId": "vendor_blacksmith",
+    "services": ["repair", "enchant", "shop"]
+  },
+  {
+    "id": "tailor",
+    "name": "Tailor",
+    "inventoryTableId": "vendor_tailor",
+    "services": ["shop"]
+  },
+  {
+    "id": "pharmacy",
+    "name": "Pharmacy",
+    "inventoryTableId": "vendor_pharmacy",
+    "services": ["shop"]
+  },
+  {
+    "id": "general",
+    "name": "General Store",
+    "inventoryTableId": "vendor_general",
+    "services": ["shop"]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "forest",
+    "name": "Whispering Forest",
+    "enemyTables": ["zone_forest"],
+    "difficultyBias": 0.1
+  },
+  {
+    "id": "ruins",
+    "name": "Old Ruins",
+    "enemyTables": ["zone_ruins"],
+    "difficultyBias": 0.3
+  }
+]

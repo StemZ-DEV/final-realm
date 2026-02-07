@@ -1,0 +1,64 @@
+[
+  {
+    "id": "burn",
+    "name": "Burn",
+    "type": "damage",
+    "duration": 3,
+    "stackRule": "refresh",
+    "tickEffect": { "hp": -4 },
+    "onApply": "Scorched by flames."
+  },
+  {
+    "id": "poison",
+    "name": "Poison",
+    "type": "damage",
+    "duration": 4,
+    "stackRule": "refresh",
+    "tickEffect": { "hp": -3 }
+  },
+  {
+    "id": "bleed",
+    "name": "Bleed",
+    "type": "damage",
+    "duration": 2,
+    "stackRule": "refresh",
+    "tickEffect": { "hp": -5 }
+  },
+  {
+    "id": "stun",
+    "name": "Stun",
+    "type": "debuff",
+    "duration": 1,
+    "stackRule": "refresh"
+  },
+  {
+    "id": "slow",
+    "name": "Slow",
+    "type": "debuff",
+    "duration": 2,
+    "stackRule": "refresh"
+  },
+  {
+    "id": "regen",
+    "name": "Regen",
+    "type": "heal",
+    "duration": 3,
+    "stackRule": "refresh",
+    "tickEffect": { "hp": 4 }
+  },
+  {
+    "id": "shield",
+    "name": "Shield",
+    "type": "buff",
+    "duration": 2,
+    "stackRule": "refresh",
+    "tickEffect": { "hp": 2 }
+  },
+  {
+    "id": "vulnerable",
+    "name": "Vulnerable",
+    "type": "debuff",
+    "duration": 2,
+    "stackRule": "refresh"
+  }
+]
